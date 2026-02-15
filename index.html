@@ -176,6 +176,31 @@
             }
             #navList.mobile-open a { padding: 0.6rem 0.8rem; text-align: center; }
         }
+
+        /* Improve mobile menu alignment and sizing */
+        @media (max-width: 640px) {
+            #navList.mobile-open { align-items: center; }
+            #navList.mobile-open li { width: 100%; }
+            #navList.mobile-open a { display: block; width: 100%; text-align: center; padding: 0.75rem 0; font-size: 14px; }
+            #navList { text-align: center; }
+
+            /* Contact section: reduce padding and gaps for mobile */
+            #contact { padding-top: 3rem; padding-bottom: 3rem; }
+            #contact .glass { padding: 1rem; border-radius: 16px; }
+            #contact .grid { gap: 1.25rem; }
+            #contact .space-y-8 .flex { flex-wrap: wrap; gap: 0.5rem; }
+
+            /* Shrink decorative blur element inside contact on small screens */
+            #contact .glass > .absolute { width: 160px; height: 160px; filter: blur(40px); right: -12px; top: -12px; }
+
+            /* Ensure form elements remain full-width and readable */
+            #contact input, #contact textarea, #contact button { font-size: 14px; }
+        }
+
+        @media (min-width: 641px) and (max-width: 1024px) {
+            /* Slightly reduce the top-right blur on tablet sizes */
+            #contact .glass > .absolute { width: 220px; height: 220px; filter: blur(60px); }
+        }
     </style>
 </head>
 <body class="selection:bg-indigo-500/40">
