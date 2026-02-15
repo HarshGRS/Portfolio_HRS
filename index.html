@@ -139,6 +139,43 @@
 
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+        /* Responsive tweaks */
+        img { max-width: 100%; height: auto; display: block; }
+
+        /* Make aura smaller on mobile to avoid covering content */
+        @media (max-width: 640px) {
+            .aura {
+                width: 300px;
+                height: 300px;
+                filter: blur(60px);
+            }
+            #header { left: 0; transform: none; padding: 0 1rem; }
+            #header nav { padding: 0.5rem 1rem; }
+        }
+
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .aura { width: 420px; height: 420px; filter: blur(80px); }
+        }
+
+        /* Mobile nav appearance when toggled open */
+        @media (max-width: 1024px) {
+            #navList.mobile-open {
+                display: flex !important;
+                flex-direction: column;
+                position: absolute;
+                top: 72px;
+                left: 1rem;
+                right: 1rem;
+                gap: 1rem;
+                padding: 1rem;
+                background: rgba(15,23,42,0.85);
+                border-radius: 12px;
+                border: 1px solid rgba(255,255,255,0.04);
+                z-index: 60;
+            }
+            #navList.mobile-open a { padding: 0.6rem 0.8rem; text-align: center; }
+        }
     </style>
 </head>
 <body class="selection:bg-indigo-500/40">
@@ -155,7 +192,7 @@
                 <a href="#home" class="gradient-text font-mono">HRS</a>
             </div>
             
-            <ul class="hidden lg:flex items-center space-x-6 text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">
+            <ul id="navList" class="hidden lg:flex items-center space-x-6 text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">
                 <li><a href="#home" class="hover:text-white transition-colors">Home</a></li>
                 <li><a href="#about" class="hover:text-white transition-colors">About</a></li>
                 <li><a href="#skills" class="hover:text-white transition-colors">Skills</a></li>
@@ -717,6 +754,35 @@
         };
         const observer = new IntersectionObserver(revealCallback, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // --- Mobile Menu Toggle ---
+        (function(){
+            const menuToggle = document.getElementById('menuToggle');
+            const navList = document.getElementById('navList');
+            if (!menuToggle || !navList) return;
+
+            menuToggle.addEventListener('click', () => {
+                navList.classList.toggle('hidden');
+                navList.classList.toggle('mobile-open');
+                const icon = menuToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-bars');
+                    icon.classList.toggle('fa-times');
+                }
+            });
+
+            // Close mobile menu when a nav link is clicked (on small screens)
+            navList.querySelectorAll('a').forEach(a => {
+                a.addEventListener('click', () => {
+                    if (window.innerWidth <= 1024) {
+                        navList.classList.add('hidden');
+                        navList.classList.remove('mobile-open');
+                        const icon = menuToggle.querySelector('i');
+                        if (icon) { icon.classList.remove('fa-times'); icon.classList.add('fa-bars'); }
+                    }
+                });
+            });
+        })();
     </script>
 </body>
 </html>
